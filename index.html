@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1 class="navbar-logo">Library</h1>
+        <nav class="navbar-menu">
+            <button type="button" class="uil uil-bag"></button>
+            <button type="button" class="uil uil-laptop"></button>
+            <button type="button" class="uil uil-envelope active"></button>
+            <button type="button" class="uil uil-plus" id="addBook" onclick="toggleModal()"></button>
+        </nav>
+    </nav>
+    <main>
+        <div class="bookListContainer">
+            <table class="table" id="bookList">
+                <tr>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Num of pages</th>
+                    <th>Read status</th>
+                </tr>
+            </table>
+        </div>
+    </main>
+    <div class="modal-background">
+        <div class="modal addBookForm">
+            <div class="modal-header">
+                <h2>Add new book</h2>
+                <button type="button" class="uil uil-times" onclick="toggleModal()"></button>
+            </div>
+
+            <form id="bookForm">
+                <div class="user-box">
+                    <input type="text" name="author" required autocomplete="off">
+                    <label>Author</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="title" required autocomplete="off">
+                    <label>Title</label>
+                </div>
+                <div class="user-box">
+                    <input type="number" name="pages" required autocomplete="off">
+                    <label>Pages (in numbers)</label>
+                </div>
+                <div class="user-checkbox">
+                    <input type="checkbox" name="read">
+                    <label>Read</label>
+                </div>
+                <a href="#" id="submitBtnBox">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <input type="submit" id="submitBtn" value="SUBMIT">
+                </a>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
