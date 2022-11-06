@@ -1,4 +1,5 @@
 let myLibrary = [];
+var currentBookIndex = 0;
 
 var bookList = document.getElementById('bookList');
 
@@ -17,39 +18,56 @@ function Book(author, title, pages, read) {
     this.pages = pages;
     this.read = read;
 }
-Book.prototype.displayBook = function () {
-    console.log(this.author, this.title, this.pages, this.read)
-}
+// Book.prototype.displayBook = function () {
+//     console.log(this.author, this.title, this.pages, this.read)
+// }
 
 function displayBook() {
+    // console.log('add book')
     let lastBookIndex = myLibrary.length - 1;
     let { author, title, pages, read } = myLibrary[lastBookIndex];
     let newBookList = document.createElement('tr');
     newBookList.innerHTML = `
-        <td>${author}</td>
-        <td>${title}</td>
-        <td>${pages}</td>
-        <td>${read}</td>
-        `
+            <td>${author}</td>
+            <td>${title}</td>
+            <td>${pages}</td>
+            <td>${read}</td>
+            <td>
+                <button type="button" style='font-size: large;' class="uil uil-trash" id="removeBook"></button>
+            </td>
+            <td>
+                <label class="switch">
+                    <input type="checkbox" id="switchToggle" data-switch='${currentBookIndex}' value="${read ? true : false}">
+                    <span class="slider"></span>
+                </label>
+            </td>
+            `
+    //     <div class="switchWrapper">
+    //     <input class="switch" id="switch" type="checkbox" data-switch='${currentBookIndex}' />
+    //     <label for="switch">Toggle</label>
+    // </div>
+    newBookList.setAttribute('data-index', currentBookIndex)
     bookList.appendChild(newBookList);
-    console.log(myLibrary[lastBookIndex])
+    // console.log(myLibrary[lastBookIndex])
+
 }
 
 function addBookToLibrary(newBook) {
     myLibrary.push(newBook);
-    console.log(myLibrary)
+    // console.log(myLibrary)
     displayBook();
+    currentBookIndex++;
+    removeBook();
+    toggleRead();
+    console.log('called after add book')
 }
 
-// let author = 'ryan';
-// let title = 'js';
-// let pages = '100';
-// let read = true;
-// const newBook = new Book(author, title, pages, read);
-// newBook.displayBook();
-// addBookToLibrary(newBook);
-// addBookToLibrary(book1);
-// displayBook();
+let author = 'ryan';
+let title = 'js';
+let pages = '100';
+let read = true;
+const newBook = new Book(author, title, pages, read);
+addBookToLibrary(newBook);
 
 function toggleModal() {
     const bodyClassList = document.body.classList;
@@ -72,7 +90,7 @@ function submitForm(e) {
     let input = e.target;
     console.log(e)
     Object.values(input).forEach((item) => {
-        console.log(item.value);
+        // console.log(item.value);
         if (item.value === '' || item.value === undefined) {
             empty = true;
             err = true;
@@ -195,7 +213,6 @@ form.addEventListener('submit', function handleSubmit(event) {
         Object.values(err).forEach((el) => {
             el.remove();
         })
-
         let [author, title, pages, read] = input;
         const newBook = new Book(author.value, title.value, pages.value, read.checked);
         addBookToLibrary(newBook);
@@ -204,3 +221,75 @@ form.addEventListener('submit', function handleSubmit(event) {
     // reset form
     form.reset();
 });
+
+function removeBook() {
+    const deleteBook = document.querySelectorAll('#removeBook');
+    deleteBook.forEach((element) => {
+        element.addEventListener('click', (e) => {
+            // get book record data index 
+            let bookIndex = element.parentElement.parentElement.getAttribute('data-index');
+            // delete item from myLibrary
+            if (bookIndex > -1) {
+                // only splice array when item is found
+                // 2nd parameter means remove one item only
+                myLibrary.splice(bookIndex, 1);
+            }
+            // remove element from table
+            element.parentElement.parentElement.remove();
+            // console.log(myLibrary)
+            // reset value of currentBookIndex
+            currentBookIndex = 0;
+        })
+    })
+
+
+}
+// removeBook();
+
+function toggleRead() {
+    const toggleSwitch = document.querySelectorAll('#switchToggle');
+    // console.log(toggleSwitch[1])
+    toggleSwitch.forEach((el) => {
+        console.log(el.getAttribute('value'))
+        console.log(el.value)
+
+        // var readStatus = el.parentElement.parentElement.parentElement.children[3].innerText;
+        var readStatus = el.value;
+        if (readStatus === 'true') {
+            console.log('read status is true')
+            // add class / rule
+            el.classList.add('toggle');
+            el.checked = true;
+        } else {
+            // remove class / rule
+            el.classList.remove('toggle');
+            el.checked = false;
+        }
+        el.addEventListener('click', (e) => {
+            var bookRead = el.parentElement.parentElement.parentElement.children[3].innerText;
+            console.log(bookRead);
+            // console.log(el.parentElement.parentElement.parentElement.children[3].innerText)
+            let isRead = e.target.checked;
+            console.log(isRead)
+            if (isRead) {
+                // add class / rule
+                el.classList.add('toggle');
+                // change read status to true
+                el.setAttribute('value', true);
+                el.checked = true;
+                el.parentElement.parentElement.parentElement.children[3].innerText = true;
+            } else {
+                // remove class / rule
+                el.classList.remove('toggle');
+                // change read status to false
+                el.setAttribute('value', false);
+                el.checked = false;
+                el.parentElement.parentElement.parentElement.children[3].innerText = false;
+            }
+        })
+    })
+}
+
+// window.onclick = (e) => {
+//     console.log(e)
+// }
