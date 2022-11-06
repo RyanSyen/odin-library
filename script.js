@@ -266,9 +266,6 @@ function toggleRead() {
             el.checked = false;
         }
         el.addEventListener('click', (e) => {
-            var bookRead = el.parentElement.parentElement.parentElement.children[3].innerText;
-            console.log(bookRead);
-            // console.log(el.parentElement.parentElement.parentElement.children[3].innerText)
             let isRead = e.target.checked;
             console.log(isRead)
             if (isRead) {
@@ -277,6 +274,7 @@ function toggleRead() {
                 // change read status to true
                 el.setAttribute('value', true);
                 el.checked = true;
+                // change read status on mylibrary
                 el.parentElement.parentElement.parentElement.children[3].innerText = true;
             } else {
                 // remove class / rule
@@ -284,6 +282,7 @@ function toggleRead() {
                 // change read status to false
                 el.setAttribute('value', false);
                 el.checked = false;
+                // change read status on mylibrary
                 el.parentElement.parentElement.parentElement.children[3].innerText = false;
             }
         })
